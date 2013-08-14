@@ -1,0 +1,80 @@
+{{template "header"}}
+<title>重设密码</title>
+</head>
+{{template "nav-bar" .}}
+<div class="container">
+	<div class="well">
+		{{if .Forget_Suc}}
+		<form class="form-horizontal" action="/reset" method="POST">
+			<fieldset>
+				<div id="legend">
+					<legend class="">重设密码</legend>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="authen"> <i class="icon-font"></i>
+						验证码
+					</label>
+					<div class="controls">
+						<input type="text" name="authen" id="authen" placeholder="邮箱获取的验证码" required />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="reg_password"> <i class="icon-key"></i>
+						密码
+					</label>
+					<div class="controls">
+						<input type="text" minlength="6" maxlength="18" name="password" id="reg_password" placeholder="新登录密码" data-validation-minlength-message = "密码长度6~18位，英文、数字、下划线" required/>
+						<p class="help-block"></p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="re-password">
+						<i class="icon-key"></i>
+						重复输入密码
+					</label>
+					<div class="controls">
+						<input type="text" data-validation-matches-match="password" name="re-password" id="re-password" placeholder="再次输入登录密码" data-validation-matches-message = "密码不一致" required/>
+						<p class="help-block"></p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="fundpassword">
+						<i class="icon-lock"></i>
+						资金密码
+					</label>
+					<div class="controls">
+						<input type="text" minlength="6" maxlength="18" name="fundpassword" id="fundpassword" placeholder="新资金密码" data-validation-minlength-message = "资金密码长度6~18位，英文、数字、下划线" required/>
+						<p class="help-block"></p>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="re-fundpassword">
+						<i class="icon-lock"></i>
+						重复输入资金密码
+					</label>
+					<div class="controls">
+						<input type="text" data-validation-matches-match="fundpassword" name="re-fundpassword" id="re-fundpassword" placeholder="再次输入资金密码" data-validation-matches-message = "资金密码不一致" required/>
+						<p class="help-block"></p>
+					</div>
+				</div>
+				{{ .xsrf }}
+				<input type="hidden" name="token" value="{{.Token}}">
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-primary" type="submit">
+							<i class="icon-plus"></i>
+							重设密码
+						</button>
+					</div>
+				</div>
+			</fieldset>
+		</form>
+		{{else}}
+		<div class="alert alert-error"> <b><i class="icon-exclamation-sign"></i>
+				错误！！-->
+		{{.Error}}</b> 
+		</div>
+		{{end}}
+	</div>
+</div>
+{{template "footer" .}}

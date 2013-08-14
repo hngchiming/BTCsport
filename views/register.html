@@ -1,0 +1,24 @@
+{{template "header"}}
+<title>注册{{if .Reg_Success}}成功{{else}}失败{{end}}</title>
+</head>
+{{template "nav-bar" .}}
+<script language="javascript" type="text/javascript"> 
+setTimeout("javascript:location.href='{{if .Reg_Success}}/{{else}}/login{{end}}'", 3000); 
+</script>
+<div class="container">
+	<div class="well">
+		{{if .Reg_Success}}
+		<div class="alert alert-success"> <b><i class="icon-spinner icon-spin"></i>
+				注册成功，3秒后跳转到主页</b> 
+		</div>
+		{{else}}
+		<div class="alert alert-error"> <b><i class="icon-exclamation-sign icon-2x"></i>
+				错误！！-->
+				{{.Error}}
+				<br/>
+				3秒后跳转返回</b> 
+		</div>
+		{{end}}
+	</div>
+</div>
+{{template "footer" .}}

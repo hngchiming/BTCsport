@@ -1,0 +1,94 @@
+{{template "header"}}
+<title>关于/规则</title>
+</head>
+{{template "nav-bar" .}}
+<div class="container">
+	<h3>手续费</h3>
+	<p> <strong>网站不收取任何手续费，但是Blockchain钱包会收取每笔转账
+			<a style="color:red">0.0005</a>
+			BTC的矿工费用以维持网络。所以提现、参与竞猜和竞猜成功获得盈利时，会自动扣除 0.0005 BTC的费用，请见谅~</strong> 
+	</p>
+	<div>
+		<span class="badge badge-success">Posted 2013-08-12 17:19:31</span>
+		<div class="pull-right">
+			<span class="label">手续费</span>
+			<span class="label">竞猜</span>
+			<span class="label">提现</span>
+		</div>
+	</div>
+	<hr>
+
+	<h3>充值提现</h3>
+	<p> <strong>充值提现是自动进行的，在用户账户中，一切有迹可循~</strong> 
+	</p>
+	<div>
+		<span class="badge badge-success">Posted 2013-08-12 17:33:10</span>
+		<div class="pull-right">
+			<span class="label">充值</span>
+			<span class="label">提现</span>
+		</div>
+	</div>
+	<hr>
+
+	<h3>推广系统详情</h3>
+	<p> <strong>我们的推广系统很简单，没有复杂的股票分红制度。
+			<br>
+			推广回报 = 推广的人数 X 0.00188 X (推荐的所有用户当月输掉的BTC)
+			<br>
+			获得回报的必要条件：用户当月总投注量大于 10BTC
+			<br>
+			<p style="color:red">一个简单的例子：</p>
+			假设在您推荐了 100 个用户注册，本月这 100 个用户一共亏损 100 BTC，同时您本月总押注量大于 10 BTC，则您可以获得 100 X 0.00188 X 100 = 18.8 BTC</strong> 
+	</p>
+	<div>
+		<span class="badge badge-success">Posted 2013-08-12 18:03:40</span>
+		<div class="pull-right">
+			<span class="label">推广</span>
+			<span class="label">规则</span>
+			<span class="label">回报</span>
+		</div>
+	</div>
+	<hr>
+	<h3>竞猜规则</h3>
+	<p>
+		<p style="color:red">
+			<strong>用一个简单的例子来说明规则:</strong>
+		</p>
+		<p>
+			湖人 VS 凯尔特人 主队让分 1.5，主队赔率 1.94， 客队赔率 1.88， 预计总分 169.5，总分大小单双固定赔率 1.95
+		</p>
+		<ul style="font-weight:bold">
+			<li>
+				主队让分：主队让分总是指
+				<a style="color:red">主队</a>
+				让给
+				<a style="color:red">客队</a>
+				的分数，可以为负数
+			</li>
+			<br>
+			<li>
+				主队赔率：主队赔率是1.94，假设赛事结果为88 : 86，扣除了主队让分之后，主队(湖人)86.5: 86客队(凯尔特人)，主队仍然获胜。用户投注 1 BTC给主队(湖人)获胜，则用户会收到 1.94 个BTC
+			</li>
+			<br>
+			<li>
+				客队赔率：客队赔率是1.88，假设赛事结果为87 : 86，扣除了主队让分之后，主队(湖人)85.5: 86客队(凯尔特人)，客队获胜。用户投注 1 BTC给客队(凯尔特人)获胜，则用户会收到 1.88 个BTC
+			</li>
+			<br>
+			<li>
+				预计总分：作为投注总分大小的判断标准，假设比赛结果是 85:89，即总分为 174 > 169.5，用户投注了 1 BTC "大"，则会收到 1.95 BTC
+			</li>
+			<br>
+			<li>总分单双：假设赛事结果是 85 : 89，即总分为 174，用户投注了 1 BTC "双"，则会收到 1.95 BTC</li>
+		</ul>
+	</p>
+	<div>
+		<span class="badge badge-success">Posted 2013-08-12 18:47:04</span>
+		<div class="pull-right">
+			<span class="label">赔率</span>
+			<span class="label">规则</span>
+			<span class="label">回报</span>
+			<span class="label">竞猜</span>
+		</div>
+	</div>
+</div>
+{{template "footer" .}}

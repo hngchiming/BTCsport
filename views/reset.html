@@ -1,0 +1,19 @@
+{{template "header"}}
+<title>密码重设{{if .Reset_Suc}}成功{{else}}失败{{end}}</title>
+</head>
+{{template "nav-bar" .}}
+<div class="container">
+	<div class="well">
+		{{if .Reset_Suc}}
+		<div class="alert alert-success"> <b><i class="icon-spinner icon-spin"></i>
+				密码已经成功修改，请牢记密码~</b> 
+		</div>
+		{{else}}
+		<div class="alert alert-error"> <b><i class="icon-exclamation-sign icon-2x"></i>
+				错误！！ -->
+				{{.Error}}</b> 
+		</div>
+		{{end}}
+	</div>
+</div>
+{{template "footer" .}}

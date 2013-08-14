@@ -1,0 +1,82 @@
+{{template "header"}}
+<title>聊天室</title>
+<script src="/static/js/sockjs.js"></script>
+<script>
+    $(function() {
+		var conn = null;
+
+		function log(msg) {
+			var control = $('#log');
+			control.html(control.html() + msg + '<br/>');
+			control.scrollTop(control.scrollTop() + 1000);
+		}
+
+		function disconnect() {
+			if (conn != null) {
+				log('Disconnecting...');
+
+				conn.close();
+				conn = null;
+
+				updateUi();
+			}
+		}
+
+		function updateUi() {
+			if (conn == null || conn.readyState != SockJS.OPEN) {
+				$('#status').text('disconnected');
+				$('#connect').text('Connect');
+			} else {
+				$('#status').text('connected (' + conn.protocol + ')');
+				$('#connect').text('Disconnect');
+			}
+		}
+
+		$('form').submit(function() {
+			if ({{.User}} == false) {
+				alert("请先登录再发送聊天信息"); 
+				return false;
+			}
+			var text = $('#message').val();
+			conn.send(text);
+			$('#message').val('').focus();
+			return false;
+		});
+
+		conn = new SockJS('http://' + window.location.host + '/chat');
+		log('Connecting...');
+
+		conn.onopen = function() {
+			log('Connected.');
+			updateUi();
+		};
+
+		conn.onmessage = function(e) {
+			if ({{.User}} == false) {
+				alert("请先登录再发送聊天信息"); 
+				return false;
+			}
+			log(e.data);
+		};
+
+		conn.onclose = function() {
+			log('Disconnected.');
+			conn = null;
+			updateUi();
+		};
+
+		$('#message').val('').focus();
+    });
+</script>
+{{template "nav-bar" .}}
+<div class="container">
+	<div id="log" class="well" style="height: 40em; overflow:auto; border: 1px solid black"></div>
+	<div>
+		<form id="chatform">
+			<div>
+				<input id="message" type="text" class="span12" placeholder="请输入聊天信息~" maxlength="50" required/>
+			</div>
+		</form>
+	</div>
+</div>
+{{template "footer" .}}

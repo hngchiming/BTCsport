@@ -1,0 +1,186 @@
+{{template "header"}}
+<title>竞猜详情</title>
+</head>
+{{template "nav-bar" .}}
+<div class="container">
+	<div {{if .CanBet}}class="alert alert-success"{{else}}class="alert alert-error"{{end}}>
+		<ul style="font-family:Microsoft Yahei; font-weight:bold;">
+			{{with .Game}}
+			<li>
+				<p style="font-size:16px">赛事描述</p>
+				<ul>
+					<li>
+						<p>开始时间：{{.Timestarted}}</p>
+					</li>
+					<li>
+						<p>主队：{{.Teama}}</p>
+					</li>
+					<li>
+						<p>客队：{{.Teamb}}</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p style="font-size:16px">参与规则</p>
+				<ul>
+					<li>
+						<p>
+							主队让分 {{.Concede}} ---- 主队赔率 {{.Oddsa}} 客队赔率 {{.Oddsb}} ~~~~~ 投注 1 BTC "主队获胜", 若赢则收回 {{.Oddsa}} BTC; 投注 1 BTC "客队获胜", 若赢则收回 {{.Oddsb}} BTC
+						</p>
+					</li>
+					<li>
+						<p>
+							总分大小 {{.Scoresum}} ---- 赔率 1.95 ~~~~ 投注 1 BTC "大于\小于{{.Scoresum}}分", 若赢则共计收回 1.95 BTC
+						</p>
+					</li>
+					<li>
+						<p>
+							总分单双 -------- 赔率 1.95 ~~~~ 投注 1 BTC "单\双数总比分", 若赢则共计收回 1.95 BTC
+						</p>
+					</li>
+					<li>
+						<p style="color:red">
+							手续费 ----------- 每次成功投注以及赢得竞猜会扣除手续费 0.0005 BTC, 该手续费为 Blockchain 钱包扣除的矿工费用
+						</p>
+					</li>
+				</ul>
+			</li>
+			<li>
+				<p style="font-size:16px">赛事开始前 15 分钟截止投注!! 抓紧时间，别错过哦~</p>
+			</li>
+			<li>
+				<p style="font-size:16px">已投注详情</p>
+				<ul>
+
+					<li>
+						<p>总投注量: {{.Poolsum}}</p>
+					</li>
+					<li>
+						<ul class="inline">
+							<li>
+								<p>主队胜: {{.Poolwin}}</p>
+							</li>
+							<li>
+								<p>客队胜: {{.Poollose}}</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="inline">
+							<li>
+								<p>总分单数: {{.Poolodd}}</p>
+							</li>
+							<li>
+								<p>总分双数: {{.Pooleven}}</p>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="inline">
+							<li>
+								<p>总分大于{{.Scoresum}}: {{.Poollarge}}</p>
+							</li>
+							<li>
+								<p>总分小于{{.Scoresum}}: {{.Poolsmall}}</p>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			{{end}}
+		</ul>
+	</div>
+	{{if .PostResult}}
+	<div class="alert alert-{{if .BetSuccess}}success{{else}}error{{end}}">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		{{if .BetSuccess}} <strong>成功下注!!</strong>
+		{{else}} <strong><i class="icon-info-sign icon-large"></i>
+			出错误了!!</strong> 
+		{{.Error}}
+	{{end}}
+	</div>
+	{{end}}
+
+{{if .CanBet}}
+	<div class="container">
+		{{with .Game}}
+		<div class="span3 well">
+			<form action="/game/{{.Id}}" method="POST">
+				<fieldset>
+					<legend>主客队(主队让分{{.Concede}})</legend>
+					<div>
+						<label class="radio">
+							<input type="radio" name="AorB" id="A" value="A_Win" checked>主队胜</label>
+						<label class="radio">
+							<input type="radio" name="AorB" id="B" value="B_Win">客队胜</label>
+					</div>
+					<div class="input-prepend">
+						<span class="add-on"> <i class="icon-bold"></i>
+						</span>
+						<input class="span2" type="text" name="amount" placeholder="投注量"  maxlength="10" required/>
+					</div>
+					<div>
+						{{end}}
+					{{.xsrf}}
+						<input type="hidden" name="type" value="AorB">
+						<button type="submit" class="btn btn-primary btn-mini">投注</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="span3 well">
+			{{with .Game}}
+			<form action="/game/{{.Id}}" method="POST">
+				{{end}}
+				<fieldset>
+					<legend>单双(两队总分之和)</legend>
+					<div>
+						<label class="radio">
+							<input type="radio" name="OddEven" id="Odd" value="Odd" checked>单</label>
+						<label class="radio">
+							<input type="radio" name="OddEven" id="Even" value="Even">双</label>
+					</div>
+					<div class="input-prepend">
+						<span class="add-on">
+							<i class="icon-bold"></i>
+						</span>
+						<input class="span2" type="text" name="amount" placeholder="投注量"  maxlength="10" required/>
+					</div>
+					<div>
+						{{.xsrf}}
+						<input type="hidden" name="type" value="OddEven">
+						<button type="submit" class="btn btn-primary btn-mini">投注</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="span3 well">
+			{{with .Game}}
+			<form action="/game/{{.Id}}" method="POST">
+				<fieldset>
+					<legend>大小(总分{{.Scoresum}})</legend>
+					{{end}}
+					<div>
+						<label class="radio">
+							<input type="radio" name="LargeSmall" id="Large" value="Large" checked>大</label>
+						<label class="radio">
+							<input type="radio" name="LargeSmall" id="Small" value="Small">小</label>
+					</div>
+					<div class="input-prepend">
+						<span class="add-on">
+							<i class="icon-bold"></i>
+						</span>
+						<input class="span2" type="text" name="amount" placeholder="投注量"  maxlength="10" required/>
+					</div>
+					<div>
+						{{.xsrf}}
+						<input type="hidden" name="type" value="LargeSmall">
+						<button type="submit" class="btn btn-primary btn-mini">投注</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	{{end}}
+</div>
+{{template "footer" .}}

@@ -1,0 +1,19 @@
+{{define "user"}}
+{{template "header"}}
+<title>用户中心</title>
+</head>
+{{template "nav-bar" .}}
+			    <div class="pull-left span2 well">
+			  			<ul class="nav nav-list">
+							<li class="nav-header">钱包管理</li>
+			  				<li {{if .Deposit}}class="active"{{end}}><a href="/user/Deposit">充值</a></li>
+				    		<li {{if .Withdraw}}class="active"{{end}}><a href="/user/Withdraw">提现</a></li>
+
+				    		<li class="nav-header">推广系统</li>
+				    		<li {{if .Refer}}class="active"{{end}}><a href="/user/Refer">推广详情</a></li>
+
+				    		<li class="nav-header">投注管理</li>
+				    		<li {{if .Allbet}}class="active"{{end}}><a href="/user/Allbet">所有投注</a></li>
+			    		</ul>
+			    </div>
+{{end}}

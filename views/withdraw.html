@@ -1,0 +1,22 @@
+{{template "header"}}
+<title>提现申请</title>
+</head>
+{{template "nav-bar" .}}
+{{if .User}}
+<div class="container">
+	<form class="form-horizontal" action="/withdraw" method="POST">
+		<div class="control-group">
+			<label class="control-label" for="authen">验证码</label>
+			<div class="controls">
+				<input type="text" id="authen" placeholder="邮箱获取的验证码" name="authen"></div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				{{.xsrf}}
+				<button type="submit" class="btn">确认提现</button>
+			</div>
+		</div>
+	</form>
+</div>
+{{end}}
+{{template "footer" .}}

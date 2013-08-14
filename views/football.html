@@ -1,0 +1,47 @@
+{{template "header"}}
+<title>BTC体育竞猜--足球</title>
+</head>
+{{template "nav-bar" .}}
+<div class="container">
+<table class="table table-bordered table-hover table-striped ">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>开始时间</th>
+			<th>主队</th>
+			<th>客队</th>
+			<th>主队让分</th>
+			<th>主队赔率</th>
+			<th>客队赔率</th>
+			<th>预计总分</th>
+			<th>状态</th>
+			<th>参与</th>
+		</tr>
+	</thead>
+	<tbody style="font-size:16px;font-family:Microsoft Yahei;font-weight:bold;">
+		{{range .AllGame}}
+		<tr class="{{.Tr_Class}}">
+			{{with .Game_Detail}}
+			<td>{{.Id}}</td>
+			<td>{{.Timestarted}}</td>
+			<td>{{.Teama}}</td>
+			<td>{{.Teamb}}</td>
+			<td>{{.Concede}}</td>
+			<td>{{.Oddsa}}</td>
+			<td>{{.Oddsb}}</td>
+			<td>{{.Scoresum}}</td>
+			{{end}}
+			<td>
+				<span class="label label{{.Lbl_Class}}">{{.Lbl_String}}</span>
+			</td>
+			<td>
+				<a href="/game/{{with .Game_Detail}}{{.Id}}{{end}}">
+					<span class="btn btn{{.Btn_Class}} btn-mini">{{.Btn_String}}</span>
+				</a>
+			</td>
+		</tr>
+		{{end}}
+	</tbody>
+</table>
+</div>
+{{template "footer" .}}

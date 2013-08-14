@@ -1,0 +1,238 @@
+{{template "header"}}
+<title>登录/注册/找回密码</title>
+</head>
+{{template "nav-bar" .}}
+<script type="text/javascript">
+	$(document).ready(function() {
+         function setCookie(name, value) {
+            var Days = 1;
+            var exp = new Date(); 
+            exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000); 
+            document.cookie = name + "=" + escape(value) + "; path=/; expires=" + exp.toGMTString();
+         };
+
+         setCookie("nobot", {{.Cookie}});
+      });
+</script>
+<script type="text/javascript">
+		function RSAEncode(){
+			var rsa_n = "BDEBE67E89C7BD7FF941CBE9383413B9749C6B0A4E51DB561D1902DDCF601FF4724661FEF9F7BB506F4E10C87D044146A1FE817A18CEA267194E21A4ACA68C0AD92B53E3852D29AA394AC428CC9F10143E8A5D5C237E0C0768EBB720AB80801ADC97243345FFE9388E7B25CF18F51BFA59269345E57FB424284800C9EB7DE5FF";  
+      
+		    setMaxDigits(131);
+			key = new RSAKeyPair(
+			 "10001", "", rsa_n
+			);
+
+		    var username = document.getElementById("username").value;
+		    var password = document.getElementById("password").value;
+		    username = encryptedString(key, username);
+		    password = encryptedString(key, password);
+		    document.getElementById("username").value = username;
+		    document.getElementById("password").value = password;
+		    document.getElementById("RSAlogin").submit();
+		}
+</script>
+<div class="container">
+	<div>
+		{{if .ShowLogin}}
+		<div class="well">
+			<ul class="nav nav-pills">
+				<li class="active">
+					<a href="#login" data-toggle="tab">登录</a>
+				</li>
+				<li>
+					<a href="#create" data-toggle="tab">注册新账户</a>
+				</li>
+				<li>
+					<a href="#forget" data-toggle="tab">忘记密码</a>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane active in" id="login">
+					<form id="RSAlogin" name="login" class="form-horizontal" action="/login" method="POST" >
+						<div class="control-group">
+							<!-- Username -->
+							<label class="control-label" for="username"> <i class="icon-user"></i>
+								用户名
+							</label>
+							<div class="controls">
+								<input type="text" id="username" name="username" placeholder="用户名" minlength="6" maxlength="18" data-validation-minlength-message = "用户名长度6~18位，英文、数字、下划线" required >
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<!-- Password-->
+							<label class="control-label" for="password"> <i class="icon-key"></i>
+								密码
+							</label>
+							<div class="controls">
+								<input type="text" id="password" name="password" placeholder="密码" minlength="6" maxlength="18" data-validation-minlength-message = "密码长度6~18位，英文、数字、下划线" required>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						{{ .xsrf }}
+						<input type="hidden" name="token" value="{{.Token}}">
+						<div class="control-group">
+							<!-- Button -->
+							<div class="controls">
+								<button class="btn btn-success" type="submit" >
+									<i class="icon-signin icon-large"></i>
+									登录
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="tab-pane fade" id="create">
+					<form name="register" class="form-horizontal" action="/register" method="POST">
+						{{if .Refer}}
+						<div class="control-group">
+							<label class="control-label">
+								推荐人
+							</label>
+							<div class="controls">
+									<span class="alert alert-info span2 uneditable-input">{{.Refer}}</span>
+									<input type="hidden" value="{{.Refer}}" name="refer" />
+							</div>
+						</div>
+						{{end}}
+						<div class="control-group">
+							<label class="control-label" for="reg_username">
+								<i class="icon-user"></i>
+								用户名
+							</label>
+							<div class="controls">
+								<input type="text" id="reg_username" name="username" placeholder="用户名" minlength="6" maxlength="18" data-validation-minlength-message = "用户名长度6~18位，英文、数字、下划线" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="reg_password">
+								<i class="icon-key"></i>
+								密码
+							</label>
+							<div class="controls">
+								<input type="text" minlength="6" maxlength="18" name="password" id="reg_password" placeholder="登录密码" data-validation-minlength-message = "密码长度6~18位，英文、数字、下划线" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="re-password">
+								<i class="icon-key"></i>
+								重复输入密码
+							</label>
+							<div class="controls">
+								<input type="text" data-validation-matches-match="password" name="re-password" id="re-password" placeholder="再次输入登录密码" data-validation-matches-message = "密码不一致" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="fundpassword">
+								<i class="icon-lock"></i>
+								资金密码
+							</label>
+							<div class="controls">
+								<input type="text" minlength="6" maxlength="18" name="fundpassword" id="fundpassword" placeholder="资金密码" data-validation-minlength-message = "资金密码长度6~18位，英文、数字、下划线" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="re-fundpassword">
+								<i class="icon-lock"></i>
+								重复输入资金密码
+							</label>
+							<div class="controls">
+								<input type="text" data-validation-matches-match="fundpassword" name="re-fundpassword" id="re-fundpassword" placeholder="再次输入资金密码" data-validation-matches-message = "资金密码不一致" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="email">
+								<i class="icon-envelope-alt"></i>
+								Email地址
+							</label>
+							<div class="controls">
+								<input type="email" id="email" name="email" placeholder="请填写真实Email，用于找回密码" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="birth">
+								<i class="icon-time"></i>
+								出生年月日
+							</label>
+							<div class="controls">
+								<input type="text" id="birth" name="birth" placeholder="19890604" data-validation-regex-regex="19\d{2}((0[1-9])|(1[0-2]))(0[1-9]|[12]\d|3[01])" data-validation-regex-message="格式19890604(YYYYMMDD)   用于找回密码" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						{{ .xsrf }}
+						<input type="hidden" name="token" value="{{.Token}}">
+						<div class="control-group">
+							<div class="controls">
+								<button class="btn btn-primary" type="submit">
+									<i class="icon-plus"></i>
+									注册
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="tab-pane fade" id="forget">
+					<form name="forget" class="form-horizontal" action="/forget" method="POST">
+						<div class="control-group">
+							<label class="control-label" for="for_username">
+								<i class="icon-user"></i>
+								用户名
+							</label>
+							<div class="controls">
+								<input type="text" minlength="6" maxlength="18" name="username" id="for_username" placeholder="用户名" data-validation-minlength-message = "用户名长度6~18位，英文、数字、下划线" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="for_birth">
+								<i class="icon-time"></i>
+								出生年月日
+							</label>
+							<div class="controls">
+								<input type="text" id="for_birth" name="birth" placeholder="19890604" data-validation-regex-regex="19\d{2}((0[1-9])|(1[0-2]))(0[1-9]|[12]\d|3[01])" data-validation-regex-message="格式19890604(YYYYMMDD)" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="for_email">
+								<i class="icon-envelope-alt"></i>
+								Email地址
+							</label>
+							<div class="controls">
+								<input type="email" id="for_email" name="email" placeholder="输入注册时填的Email地址" required/>
+								<p class="help-block"></p>
+							</div>
+						</div>
+						{{ .xsrf }}
+						<input type="hidden" name="token" value="{{.Token}}">
+						<div class="control-group">
+							<div class="controls">
+								<button class="btn btn-danger" type="submit" >
+									<i class="icon-question-sign"></i>
+									申请重设密码
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			{{else}}
+			<div class="well">
+				<div class="alert alert-error"> <b><i class="icon-exclamation-sign"></i>
+						错误！！-->
+		{{.Error}}</b> 
+				</div>
+			</div>
+			{{end}}
+		</div>
+	</div>
+</div>
+{{template "footer" .}}
